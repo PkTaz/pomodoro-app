@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let timerDuration = 25 * 60; // Initial value set to 25 minutes
+    let workDuration = 25 * 60;
+    let breakDuration = 5 * 60;
+    let timerDuration = workDuration;
     let timerInterval;
+    let cycleCounter = 0;
 
     const timerDisplay = document.getElementById('timer');
     const startButton = document.getElementById('start');
@@ -22,19 +25,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateTimerDisplay();
             } else {
                 clearInterval(timerInterval);
-                // Timer reached 0:00, change background to light blue
+                // Timer reached 00:00, change background to light blue
                 document.body.style.backgroundColor = '#ADD8E6'; // Light Blue
 
-                // Check if it's a work session or break
                 if (timerDuration === 0) {
-                    // If it's a break, set the timer to 5 minutes and start it automatically
-                    timerDuration = 5 * 60;
-                    h1.textContent = "Break!";
-                    startTimer();
-                } else {
-                    // If it's the end of a break, reset to work session
-                    h1.textContent = "Pomodoro Clock";
-                    timerDuration = 25 * 60;
+                    // Check if it's the end of a work session or break
+                    if (cycleCounter % 2 === 0) {
+                        // If it's the end of a work session, switch to break
+                        h1.textContent = "Break!";
+                        timerDuration = breakDuration;
+                    } else {
+                        // If it's the end of a break, switch to work session
+                        h1.textContent = "Pomodoro Clock";
+                        timerDuration = workDuration;
+                    }
+                    cycleCounter++;
+                    startTimer(); // Start the timer automatically
                 }
                 updateTimerDisplay();
             }
@@ -47,9 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetTimer() {
         clearInterval(timerInterval);
-        timerDuration = 25 * 60; // Reset to the initial duration for testing
+        cycleCounter = 0; // Reset cycle counter
+        timerDuration = workDuration;
         document.body.style.backgroundColor = '#f0f0f0'; // Reset background color
         h1.textContent = "Pomodoro Clock"; // Reset heading text
+        startTimer(); // Start the timer automatically after resetting
         updateTimerDisplay();
     }
 
