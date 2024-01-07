@@ -7,14 +7,24 @@
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <h1>Pomodoro Clock</h1>
+       <!-- Clock Display -->
+       <div id="clock">
+        <div id="hour"></div>
+        <div id="minute"></div>
+        <div id="second"></div>
+    </div>
+
+    <div id="video-container">
+        <!-- Paste the YouTube iframe code here -->
+        <iframe width="420" height="360" src="https://www.youtube.com/embed/7ghSziUQnhs" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <h1><i>Pomodoro Clock</i></h1>
 
     <div id="timer">25:00</div>
 
     <div id="controls">
         <button id="start">Start</button>
         <button id="pause">Pause</button>
-        <button id="reset">Reset</button>
     </div>
 
     <script src="app.js"></script>

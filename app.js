@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let workDuration = 25 * 60;
+    let workDuration = 5;
     let breakDuration = 5 * 60;
     let timerDuration = workDuration;
     let timerInterval;
@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const timerDisplay = document.getElementById('timer');
     const startButton = document.getElementById('start');
     const pauseButton = document.getElementById('pause');
-    const resetButton = document.getElementById('reset');
     const h1 = document.querySelector('h1');
 
     function updateTimerDisplay() {
@@ -25,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateTimerDisplay();
             } else {
                 clearInterval(timerInterval);
-                // Timer reached 00:00, change background to light blue
-                document.body.style.backgroundColor = '#ADD8E6'; // Light Blue
 
                 if (timerDuration === 0) {
                     // Check if it's the end of a work session or break
@@ -42,30 +39,66 @@ document.addEventListener('DOMContentLoaded', function () {
                     cycleCounter++;
                     startTimer(); // Start the timer automatically
                 }
+
+                // Flash effect during the break
+                if (cycleCounter % 2 !== 0) {
+                    flashBackground('#2ecc71', '#fff'); // Flash to green and then turn blue
+                }
+
                 updateTimerDisplay();
             }
         }, 1000);
+    }
+
+    function flashBackground(color1, color2) {
+        let flashCount = 0;
+        const flashInterval = setInterval(function () {
+            if (flashCount % 2 === 0) {
+                document.body.style.backgroundColor = color1;
+            } else {
+                document.body.style.backgroundColor = color2;
+            }
+
+            flashCount++;
+        }, 500);
+
+        // Resets the background after 5 seconds
+        setTimeout(function () {
+            clearInterval(flashInterval);
+            document.body.style.backgroundColor = ''; // Set the final color
+        }, 5000);
     }
 
     function pauseTimer() {
         clearInterval(timerInterval);
     }
 
-    function resetTimer() {
-        clearInterval(timerInterval);
-        cycleCounter = 0; // Reset cycle counter
-        timerDuration = workDuration;
-        document.body.style.backgroundColor = '#f0f0f0'; // Reset background color
-        h1.textContent = "Pomodoro Clock"; // Reset heading text
-        startTimer(); // Start the timer automatically after resetting
-        updateTimerDisplay();
-    }
-
     // Event listeners for buttons
     startButton.addEventListener('click', startTimer);
     pauseButton.addEventListener('click', pauseTimer);
-    resetButton.addEventListener('click', resetTimer);
 
     // Initial display
     updateTimerDisplay();
+
+    function updateClock() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        // Convert to 12-hour format
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+
+        document.getElementById('hour').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minute').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('second').textContent = seconds.toString().padStart(2, '0') + ' ' + ampm;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Initial update
+    updateClock();
 });
+
