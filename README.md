@@ -18,6 +18,4 @@ Click the "Start" button to initiate a Pomodoro session.
 
 Pause the timer whenever needed with the "Pause" button.
 
-Reset the timer to its initial state using the "Reset" button.
-
 Experience a refreshing light blue background and gain an additional 5 minutes when the timer reaches 0:00.
