@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let workDuration = 5;
+    let workDuration = 25 * 60;
     let breakDuration = 5 * 60;
     let timerDuration = workDuration;
     let timerInterval;
